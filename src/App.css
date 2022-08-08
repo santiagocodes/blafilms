@@ -48,6 +48,10 @@ button {
   fill: #e63946;
 }
 
+.search-results .disabled .icon:hover {
+  fill: grey;
+}
+
 .search-results-list {
   width: 100%;
   display: grid;
