@@ -12,10 +12,31 @@ const Films = () => {
     useEffect(() => {
       searchParam ? searchForFilms() : alert('Looks like you are missing a search term. Please add one before trying again.')
     }, [pageParam])
+
+    const saveFilteredFilmsResponse = (filmsResponse) => {
+      let newFilmsResponse = { ...filmsResponse }
+      
+      // Remove duplicate IDs
+      let filteredSeachFilmsResponse = []
+      newFilmsResponse.Search?.forEach(film => {
+        const indexFound = filteredSeachFilmsResponse.findIndex(filteredFilm => filteredFilm.imdbID == film.imdbID)
+        if (indexFound <= -1) filteredSeachFilmsResponse.push(film)
+      })
+
+      // Can refactor to replace existing Search when length not in use on handleOnChangeIncreasePageParam (& more)
+      newFilmsResponse.filteredSearch = filteredSeachFilmsResponse
+      
+      setSearchResult(newFilmsResponse)
+    }
+
+    const saveFilmsResponse = (filmsResponse) => {
+      setSearchResult(filmsResponse)
+      saveFilteredFilmsResponse(filmsResponse)
+    }
   
     const checkFilmsResponse = (filmsResponse) => {
       if (filmsResponse?.Response === 'True') {
-        setSearchResult(filmsResponse)
+        saveFilmsResponse(filmsResponse)
       } else {
         console.error(filmsResponse?.Error ? filmsResponse.Error : 'No response from server')
         alert(`Oops! No films found. You may want to try another search.`)
@@ -72,7 +93,7 @@ const Films = () => {
                       <ChevronLeft onClick={handleOnChangeDecreasePageParam}/>
                   </div>
                   <div className="search-results-list">
-                      {searchResult?.Search.map(film => (
+                      {searchResult?.filteredSearch?.map(film => (
                         <FilmItem film= {film} />
                       ))}
                   </div>
