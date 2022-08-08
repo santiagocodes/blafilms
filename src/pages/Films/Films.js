@@ -8,6 +8,8 @@ const Films = () => {
     const [searchResult, setSearchResult] = useState()
     const [pageParam, setPageParam] = useState(1)
     const [searchParam, setSearchParam] = useState('king')
+    const [lastPage, setLastPage] = useState(1)
+    const limit = 10
   
     useEffect(() => {
       searchParam ? searchForFilms() : alert('Looks like you are missing a search term. Please add one before trying again.')
@@ -23,13 +25,18 @@ const Films = () => {
         if (indexFound <= -1) filteredSeachFilmsResponse.push(film)
       })
 
-      // Can refactor to replace existing Search when length not in use on handleOnChangeIncreasePageParam (& more)
-      newFilmsResponse.filteredSearch = filteredSeachFilmsResponse
-      
+      newFilmsResponse.Search = filteredSeachFilmsResponse
+
       setSearchResult(newFilmsResponse)
     }
 
+    const saveLastPage = (totalResults) => {
+      const lastPage = Math.ceil(totalResults / limit)
+      setLastPage(lastPage)
+    }
+
     const saveFilmsResponse = (filmsResponse) => {
+      saveLastPage(filmsResponse.totalResults)
       setSearchResult(filmsResponse)
       saveFilteredFilmsResponse(filmsResponse)
     }
@@ -69,8 +76,7 @@ const Films = () => {
     }
   
     const handleOnChangeIncreasePageParam = () => {
-      // refactor later if last page is added to API as Result lengthmight be 10 and still be the last page
-      if (searchResult && searchResult.Result?.length === 10) setPageParam(prevState => prevState + 1) 
+      if (pageParam < lastPage) setPageParam(prevState => prevState + 1) 
     }
 
     return (
@@ -93,11 +99,11 @@ const Films = () => {
                       <ChevronLeft onClick={handleOnChangeDecreasePageParam}/>
                   </div>
                   <div className="search-results-list">
-                      {searchResult?.filteredSearch?.map(film => (
+                      {searchResult?.Search?.map(film => (
                         <FilmItem film= {film} />
                       ))}
                   </div>
-                  <div className={`chevron ${searchResult.Search?.length !== 10 ? 'disabled' : ''}`}>
+                  <div className={`chevron ${pageParam >= lastPage ? 'disabled' : ''}`}>
                       <ChevronRight onClick={handleOnChangeIncreasePageParam}/>
                   </div>
                 </div>

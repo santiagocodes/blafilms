@@ -49,7 +49,7 @@ button {
 }
 
 .search-results .disabled .icon:hover {
-  fill: grey;
+  fill: #1d3557;
 }
 
 .search-results-list {
