@@ -99,7 +99,7 @@ const Films = () => {
                       <ChevronLeft onClick={handleOnChangeDecreasePageParam}/>
                   </div>
                   <div className="search-results-list">
-                      {searchResult?.Search?.map(film => (
+                      {searchResult?.Search?.length > 0 && searchResult.Search?.map(film => (
                         <FilmItem film= {film} />
                       ))}
                   </div>
