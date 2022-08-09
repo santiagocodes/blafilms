@@ -48,6 +48,10 @@ button {
   fill: #e63946;
 }
 
+.search-results .disabled .icon {
+  opacity: 0.25;
+}
+
 .search-results .disabled .icon:hover {
   fill: #1d3557;
 }
