@@ -99,9 +99,9 @@ const Films = () => {
                       <ChevronLeft onClick={handleOnChangeDecreasePageParam}/>
                   </div>
                   <div className="search-results-list">
-                      {searchResult?.Search?.length > 0 && searchResult.Search?.map(film => (
-                        <FilmItem film= {film} />
-                      ))}
+                      {searchResult?.Search?.length > 0 && (
+                        <FilmItem films={searchResult.Search} />
+                      )}
                   </div>
                   <div className={`chevron ${pageParam >= lastPage ? 'disabled' : ''}`}>
                       <ChevronRight onClick={handleOnChangeIncreasePageParam}/>
